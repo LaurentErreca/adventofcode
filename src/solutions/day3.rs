@@ -43,6 +43,43 @@ fn convert_to_decimal(vector_of_int: Vec<u32>) -> u32 {
         .sum()
 }
 
+fn filter_common(data: &Vec<Vec<char>>, position: &usize, rating: &String) -> Vec<Vec<char>> {
+    let mut ones: u32 = 0;
+    let mut zeros: u32 = 0;
+    let mut common: char = '1';
+    let mut output: Vec<Vec<char>> = Vec::with_capacity(0);
+    for chars in data {
+        if chars[*position] == '1' {
+            ones += 1;
+        }
+        else {
+            zeros += 1;
+        }
+    }
+    if rating == "oxygen" {
+        if ones >= zeros {
+            common = '1';
+        }
+        else {
+            common = '0';
+        }
+    }
+    if rating == "co2" {
+        if zeros <= ones {
+            common = '0';
+        }
+        else {
+            common = '1';
+        }
+    }
+    for char in data {
+        if char[*position] == common {
+            output.push(char.to_vec());
+        }
+    }
+    return output
+}
+
 pub fn solve(part: u8, input: &String) -> String {
     let vecstr: Vec<&str> = input.lines().collect();
     let vecstr_iter = vecstr.iter();
@@ -51,25 +88,41 @@ pub fn solve(part: u8, input: &String) -> String {
         for bits in vecstr_iter {
             chars.push(bits.chars().collect());
         }
-        /* println!("Nb vec chars : {}", chars.len());
-        println!("First vector of chars : {:?}", chars[0]);
-        println!("First char of first vector of chars : {:?}", chars[0][0]);
-        println!("Last char of first vector of chars : {:?}", chars[0][chars[0].len()-1]);
-        println!("Most common : {:?}", get_most_common(&chars));
-        println!("Opposite most common : {:?}", get_opposite_chars(&get_most_common(&chars))); */
+
         let most_common_int: Vec<u32> = get_most_common(&chars).iter().map(|x| x.to_digit(10).unwrap()).collect();
         let less_common_int: Vec<u32> = get_opposite_chars(&get_most_common(&chars)).iter().map(|x| x.to_digit(10).unwrap()).collect();
-        //println!("Most common int : {:?}", most_common_int);
-        //println!("Less common int : {:?}", less_common_int);
+        println!("Most common int : {:?}", most_common_int);
+        println!("Less common int : {:?}", less_common_int);
         let decimal_most_common: u32 = convert_to_decimal(most_common_int);
         let decimal_less_common: u32 = convert_to_decimal(less_common_int);
-        //println!("Decimal most common : {:?}", decimal_most_common);
-        //println!("Decimal less common : {:?}", decimal_less_common);
         return (decimal_less_common * decimal_most_common).to_string();
     }
 
+    let mut out_ox: Vec<Vec<char>> = Vec::new();
+    let mut out_co: Vec<Vec<char>> = Vec::new();
     if part == 2 {
-        println!("No part 2 !");
+        for bits in vecstr_iter {
+            out_ox.push(bits.chars().collect());
+            out_co.push(bits.chars().collect());
+        }
+        for position in 0..out_ox[0].len() {
+            if out_ox.len() == 1 {
+                break;
+            }
+            out_ox = filter_common(&out_ox, &position, &String::from("oxygen"));
+        }
+        for position in 0..out_co[0].len() {
+            if out_co.len() == 1 {
+                break;
+            }
+            out_co = filter_common(&out_co, &position, &String::from("co2"));
+        }
+
+        let ox_rating: u32 = convert_to_decimal(out_ox[0].iter().map(|x| x.to_digit(10).unwrap()).collect());
+        let co_rating: u32 = convert_to_decimal(out_co[0].iter().map(|x| x.to_digit(10).unwrap()).collect());
+        println!("ox vector : {:?}", out_ox[0]);
+        println!("co vector : {:?}", out_co[0]);
+        return (ox_rating * co_rating).to_string();
     }
-    return String::from("part must be 1");
+    return String::from("part must be 1 or 2");
 }
