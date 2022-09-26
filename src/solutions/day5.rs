@@ -1,5 +1,4 @@
 use std::cmp;
-use std::num;
 
 
 fn get_coord(x: &str) -> Vec<Vec<i32>> {
@@ -42,7 +41,6 @@ fn get_sizes(coord: &Vec<Vec<Vec<i32>>>) -> (i32, i32) {
 pub fn solve(part: u8, input: &String) -> String {
     if part == 1 {
         let vecstr: Vec<&str> = input.lines().collect();
-        let out: Vec<i32> = vec![];
         let mut res: Vec<Vec<Vec<i32>>> = vec![];
         for i in vecstr
         .iter()
@@ -86,7 +84,6 @@ pub fn solve(part: u8, input: &String) -> String {
     }
     if part == 2 {
         let vecstr: Vec<&str> = input.lines().collect();
-        let out: Vec<i32> = vec![];
         let mut res: Vec<Vec<Vec<i32>>> = vec![];
         for i in vecstr
         .iter()

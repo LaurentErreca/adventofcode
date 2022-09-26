@@ -1,6 +1,3 @@
-use std::collections::HashMap;
-use std::iter;
-
 //   aaaa
 //  b    c
 //  b    c
@@ -115,7 +112,7 @@ fn decode_inputs(input: Vec<&str>, output: Vec<&str>) -> i32 {
         if code.len() == 7 { eight = code.clone(); /* println!("eight : {:?}", eight); */ }
     }
     //println!("one: {} - seven : {}", one, seven);
-    let a = find_a(one, seven);
+    a = find_a(one, seven);
     //println!("a = {:?}", &a);
     // find three
     for code in &input {
@@ -131,10 +128,9 @@ fn decode_inputs(input: Vec<&str>, output: Vec<&str>) -> i32 {
         if code.len() == 5 {li.push(code);}
     }
     //println!("Five letters : {:?}", li);
-    let mut tmp: char = 'z';
     // Dans 3, le segment qui est pas dans 1, 4, ou 7 est le g
     for el in three.chars() {
-        tmp = el;
+        let tmp = el;
         if !one.contains(&el.to_string()) & !four.contains(&el.to_string()) & !seven.contains(&el.to_string()) { g = tmp; }
     }
     //println!("g : {}", g);

@@ -124,19 +124,15 @@ pub fn solve(part: u8, input: &String) -> String {
     let vecstr: Vec<&str> = input.lines().collect();
     let rnd_numbers: Vec<i32> = vecstr[0].split(",").map(|c| c.parse().unwrap()).collect::<Vec<i32>>();
     //println!("Random numbers : {:?}", rnd_numbers);
-    let mut boards = get_boards(&vecstr);
+    let boards = get_boards(&vecstr);
     //println!("Number of boards : {:?}", boards.len());
-    let mut res: i32 = 0;
     if part == 1 {
         for nb in 0..rnd_numbers.len() {
             for board in &boards {
                 //println!("{:?}", board);
                 let tmp_vec: Vec<i32> = rnd_numbers[..nb].to_vec().clone();
-                res = board.bingo(&tmp_vec);
+                let res = board.bingo(&tmp_vec);
                 if res != -1 {
-                    //println!("Nb iter : {:?}", nb);
-                    let last_value: i32 = rnd_numbers[nb-1];
-                    //println!("Last value {:?}", last_value);
                     println!("Result {:?}", res);
                     return String::from("Exit");
                 }
@@ -151,7 +147,7 @@ pub fn solve(part: u8, input: &String) -> String {
             for (i, board) in boards.iter().enumerate() {
                 if !completed_boards.contains(&i) {
                     let tmp_vec: Vec<i32> = rnd_numbers[..nb].to_vec().clone();
-                    res = board.bingo(&tmp_vec);
+                    let res = board.bingo(&tmp_vec);
                     if res != -1 {
                         completed_boards.push(i);
                         println!("Removed boards {:?}", i);
