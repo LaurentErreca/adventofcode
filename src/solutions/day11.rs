@@ -34,7 +34,9 @@ pub fn solve(part: u8, input: &String) -> String {
     print_grid(&data, nb_col, nb_row);
 
     let mut nb_flashes: u32 = 0;
-    for step in 1..=100 {
+    //for step in 1..=100 {
+    let mut step: usize = 1;
+    loop {
         let mut flashed_idx: Vec<usize> = vec![];
         for idx in 0..data.len() { data[idx] = data[idx] + 1; }
 
@@ -112,9 +114,12 @@ pub fn solve(part: u8, input: &String) -> String {
                 }
             }
         }
+        if part==1 && step == 100 { println!("\nAfter step {} :", step); println!("\nNb flashes : {}", nb_flashes); break; }
+        if flashed_idx.len() == data.len() { println!("\nAll octopuses flash after {} steps\n", step); break; }
+        step += 1;
     }
-    println!("\nAfter step {} :\n", 100);
-    print_grid(&data, nb_col, nb_row);
-    println!("\nNb flashes : {}", nb_flashes);
+    //println!("\nAfter step {} :\n", step);
+    //print_grid(&data, nb_col, nb_row);
+    //println!("\nNb flashes : {}", nb_flashes);
     return String::from("Exit");
 }
